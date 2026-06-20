@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Contenido — Angelo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep:#060e2e; --mid:#1a3a8f; --bright:#2252cc; --light:#3060e0;
+    --muted:#6b7a99; --line:rgba(255,255,255,0.07);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'DM Sans',sans-serif; background:var(--deep); color:#c4cde0;
+    line-height:1.8; font-weight:300; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden; position:relative;
+  }
+  /* cursor glow */
+  .glow{
+    position:fixed; width:520px; height:520px; border-radius:50%; pointer-events:none;
+    left:var(--mx,50%); top:var(--my,50%); transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(48,96,224,0.16) 0%, transparent 65%);
+    z-index:0; transition:opacity .4s; opacity:0;
+  }
+  /* progress */
+  .progress{ position:fixed; top:0; left:0; height:3px; width:0%; z-index:50;
+    background:linear-gradient(90deg,var(--mid),var(--light)); }
+
+  .wrap{ max-width:740px; margin:0 auto; padding:0 2rem; position:relative; z-index:2; }
+
+  .label{ font-size:11px; font-weight:500; letter-spacing:1.8px; text-transform:uppercase; color:var(--bright); margin-bottom:1.1rem; }
+  .day-meta{ font-size:11px; letter-spacing:1.6px; text-transform:uppercase; color:rgba(120,160,255,.85); margin-bottom:.6rem; }
+
+  /* hero */
+  .hero{ min-height:92vh; display:flex; flex-direction:column; justify-content:center; }
+  h1{ font-family:'DM Serif Display',serif; font-size:clamp(44px,9vw,86px); color:#fff; line-height:.98; letter-spacing:-2px; font-weight:400; margin-bottom:1.5rem; }
+  h1 em{ font-style:italic; color:var(--light); }
+  .lede{ font-size:17px; color:var(--muted); max-width:540px; }
+  .scroll-cue{ margin-top:3rem; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(120,160,255,.7); display:flex; align-items:center; gap:10px; }
+  .scroll-cue .arrow{ display:inline-block; animation:bob 1.8s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+
+  section.block{ padding:6rem 0; }
+  h2{ font-family:'DM Serif Display',serif; font-size:clamp(32px,5.5vw,52px); color:#fff; line-height:1.05; letter-spacing:-1px; font-weight:400; margin-bottom:1.5rem; }
+  p{ margin-bottom:1rem; }
+  p strong{ color:#dde4f2; font-weight:500; }
+
+  .quote{ font-family:'DM Serif Display',serif; font-style:italic; font-size:clamp(20px,2.6vw,28px); color:#fff; line-height:1.38; letter-spacing:-.4px; border-left:2px solid var(--bright); padding-left:1.7rem; margin:2rem 0 2.6rem; }
+
+  .step{ display:flex; gap:1.4rem; margin-bottom:1.6rem; align-items:baseline; }
+  .step-n{ font-family:'DM Serif Display',serif; font-size:38px; color:rgba(96,144,255,.45); line-height:1; min-width:50px; flex-shrink:0; }
+  .step-body strong{ color:#fff; }
+  .step-body p{ margin-bottom:0; }
+
+  ul.tips{ list-style:none; margin-top:1.8rem; }
+  ul.tips li{ position:relative; padding-left:1.6rem; margin-bottom:.9rem; font-size:15px; color:var(--muted); }
+  ul.tips li::before{ content:''; position:absolute; left:0; top:.7em; width:6px; height:6px; border-radius:50%; background:var(--light); }
+  ul.tips li strong{ color:#c4cde0; font-weight:500; }
+
+  .basics-card{ background:rgba(34,82,204,.06); border:.5px solid rgba(120,160,255,.18); border-radius:16px; padding:2.2rem 2.4rem; margin-top:.6rem; }
+  .basics-card ul.tips{ margin-top:0; }
+
+  /* marquee dividers */
+  .marquee{ overflow:hidden; padding:1.6rem 0; border-top:.5px solid var(--line); border-bottom:.5px solid var(--line); white-space:nowrap; position:relative; z-index:2; }
+  .marquee .mtrack{ display:inline-block; animation:scroll-left 24s linear infinite; }
+  .marquee span{ font-family:'DM Serif Display',serif; font-style:italic; font-size:18px; color:rgba(120,160,255,.35); margin:0 1.6rem; }
+  .marquee span::after{ content:'·'; margin-left:1.6rem; color:rgba(120,160,255,.25); }
+  @keyframes scroll-left{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* reveal */
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.6,.2,1), transform .8s cubic-bezier(.2,.6,.2,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal.d1{ transition-delay:.08s; } .reveal.d2{ transition-delay:.16s; }
+  .reveal.d3{ transition-delay:.24s; } .reveal.d4{ transition-delay:.32s; }
+
+  footer{ padding:6rem 0 7rem; }
+  .footer-mark{ font-family:'DM Serif Display',serif; font-size:17px; color:rgba(255,255,255,.5); letter-spacing:-.2px; }
+  .footer-mark small{ display:block; font-family:'DM Sans',sans-serif; font-size:9px; font-weight:600; letter-spacing:1.6px; text-transform:uppercase; color:rgba(120,160,255,.7); margin-top:6px; }
+
+  @media(prefers-reduced-motion:reduce){
+    .reveal{ opacity:1; transform:none; } .marquee .mtrack{ animation:none; } .scroll-cue .arrow{ animation:none; }
+  }
+  @media(max-width:560px){ .wrap{ padding:0 1.4rem; } section.block{ padding:4.5rem 0; } }
+</style>
+</head>
+<body>
+<div class="glow" id="glow"></div>
+<div class="progress" id="progress"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="label reveal">Estrategia de contenido</div>
+    <h1 class="reveal d1">Guía de contenido para <em>Angelo</em></h1>
+    <p class="lede reveal d2">Una guía sencilla para grabar tus posts de la semana. Cada sección es un día con su estructura y tips. Graba en orden y la edición sale solita.</p>
+    <div class="scroll-cue reveal d3">Desliza para empezar <span class="arrow">&#8595;</span></div>
+  </header>
+</div>
+
+<div class="marquee"><div class="mtrack">
+  <span>vertical 9:16</span><span>los primeros 3 segundos</span><span>luz natural</span><span>usa tu micrófono</span><span>15–30 segundos</span><span>graba de más</span><span>vertical 9:16</span><span>los primeros 3 segundos</span><span>luz natural</span><span>usa tu micrófono</span><span>15–30 segundos</span><span>graba de más</span>
+</div></div>
+
+<div class="wrap">
+  <section class="block">
+    <div class="label reveal">Antes de empezar</div>
+    <h2 class="reveal d1">Lo básico</h2>
+    <p class="reveal d2" style="color:var(--muted)">Lo que más mueve la aguja, en cualquier video:</p>
+    <div class="basics-card reveal d2"><ul class="tips">
+      <li><strong>Graba en vertical</strong> — formato 9:16, no opcional para Reels.</li>
+      <li><strong>Luz natural</strong> — en la mañana o cerca de una ventana.</li>
+      <li><strong>Los primeros 3 segundos lo son todo</strong> — abre con movimiento, nunca con intro lenta.</li>
+      <li><strong>Graba de más</strong> — 3–4 tomas de cada shot.</li>
+      <li><strong>Usa tu micrófono</strong> — el audio limpio se siente premium.</li>
+      <li><strong>15–30 segundos</strong> — corto y al grano.</li>
+      <li><strong>Cierra invitando a comentar.</strong></li>
+    </ul></div>
+  </section>
+</div>
+
+<div class="marquee"><div class="mtrack">
+  <span>lunes — gym</span><span>martes — get ready with me</span><span>jueves — comida</span><span>viernes — salidas</span><span>lunes — gym</span><span>martes — get ready with me</span><span>jueves — comida</span><span>viernes — salidas</span>
+</div></div>
+
+<div class="wrap">
+  <section class="block">
+    <div class="day-meta reveal">Lunes · 9:00 AM</div>
+    <h2 class="reveal d1">Gym</h2>
+    <p class="quote reveal d1">Arranca la semana con energía y actitud.</p>
+    <div class="step reveal d1"><div class="step-n">01</div><div class="step-body"><p><strong>Hook (3 seg).</strong> A medio movimiento — una serie pesada, entrando al gym con actitud.</p></div></div>
+    <div class="step reveal d2"><div class="step-n">02</div><div class="step-body"><p><strong>Cuerpo (10–15 seg).</strong> 3–4 clips rápidos, mezclando ángulos.</p></div></div>
+    <div class="step reveal d3"><div class="step-n">03</div><div class="step-body"><p><strong>Cierre (5 seg).</strong> Un tip, una frase de mentalidad o la última repetición.</p></div></div>
+    <ul class="tips reveal d3">
+      <li>Tripié o botella para grabar sin manos.</li>
+      <li><strong>Voiceover:</strong> habla del <em>por qué</em> entrenas.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <div class="day-meta reveal">Martes · 8:00 AM</div>
+    <h2 class="reveal d1">Get Ready With Me</h2>
+    <p class="quote reveal d1">Personal y relajado — deja que la gente te conozca.</p>
+    <div class="step reveal d1"><div class="step-n">01</div><div class="step-body"><p><strong>Hook (3 seg).</strong> A media rutina, hablándole a la cámara como a un amigo.</p></div></div>
+    <div class="step reveal d2"><div class="step-n">02</div><div class="step-body"><p><strong>Cuerpo (15–20 seg).</strong> Tu mañana con voiceover: skincare, outfit, café.</p></div></div>
+    <div class="step reveal d3"><div class="step-n">03</div><div class="step-body"><p><strong>Cierre (5 seg).</strong> A dónde vas hoy o algo que te emocione.</p></div></div>
+    <ul class="tips reveal d3">
+      <li>Graba el voiceover <em>aparte</em> con tu micrófono.</li>
+      <li>La versión real y un poco cruda funciona mejor.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <div class="day-meta reveal">Jueves · 1:00 PM</div>
+    <h2 class="reveal d1">Comida</h2>
+    <p class="quote reveal d1">Antojable y útil — atrapa el scroll de la hora de comer.</p>
+    <div class="step reveal d1"><div class="step-n">01</div><div class="step-body"><p><strong>Hook (3 seg).</strong> El shot más antojable primero — el sartén, el emplatado, la mordida.</p></div></div>
+    <div class="step reveal d2"><div class="step-n">02</div><div class="step-body"><p><strong>Cuerpo (10–15 seg).</strong> Pasos rápidos o varios ángulos. Muestra, no expliques de más.</p></div></div>
+    <div class="step reveal d3"><div class="step-n">03</div><div class="step-body"><p><strong>Cierre (5 seg).</strong> El plato terminado + un veredicto de una línea.</p></div></div>
+    <ul class="tips reveal d3">
+      <li>Luz natural cerca de una ventana.</li>
+      <li>Close-up de textura — para el scroll.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <div class="day-meta reveal">Viernes · 5:00 PM</div>
+    <h2 class="reveal d1">Salidas y lifestyle</h2>
+    <p class="quote reveal d1">Aspiracional y divertido — la energía del fin de semana.</p>
+    <div class="step reveal d1"><div class="step-n">01</div><div class="step-body"><p><strong>Hook (3 seg).</strong> Abre con el lugar o el mejor momento — la vista, la entrada.</p></div></div>
+    <div class="step reveal d2"><div class="step-n">02</div><div class="step-body"><p><strong>Cuerpo (10–15 seg).</strong> Clips juntos — caminando, el lugar, los detalles, tú en escena.</p></div></div>
+    <div class="step reveal d3"><div class="step-n">03</div><div class="step-body"><p><strong>Cierre (5 seg).</strong> Un shot final con la vibra + dónde es o qué sigue.</p></div></div>
+    <ul class="tips reveal d3">
+      <li>B-roll a lo largo del día (5 seg cada clip).</li>
+      <li>Audio en tendencia; deja que las imágenes lo lleven.</li>
+    </ul>
+  </section>
+</div>
+
+<div class="marquee"><div class="mtrack">
+  <span>la constancia le gana a la perfección</span><span>graba en lote</span><span>revisa tus insights</span><span>la constancia le gana a la perfección</span><span>graba en lote</span><span>revisa tus insights</span>
+</div></div>
+
+<div class="wrap">
+  <footer>
+    <div class="label reveal">Para cerrar</div>
+    <h2 class="reveal d1">La constancia le gana<br>a la perfección</h2>
+    <p class="reveal d2" style="color:var(--muted); max-width:560px;">Cuatro posts buenos cada semana hacen crecer la cuenta más rápido que un video "perfecto" al mes. Graba en lote cuando puedas y, después de 2–3 semanas, revisa tus insights para ver qué está funcionando — y de ahí le metemos más a eso.</p>
+    <div class="footer-mark reveal d2">LinguaLab<small>Content & Creative</small></div>
+  </footer>
+</div>
+
+<script>
+  // cursor glow
+  const glow = document.getElementById('glow');
+  let gx = innerWidth/2, gy = innerHeight/2, cx = gx, cy = gy;
+  window.addEventListener('mousemove', e => { gx = e.clientX; gy = e.clientY; glow.style.opacity = 1; });
+  window.addEventListener('mouseleave', () => glow.style.opacity = 0);
+  (function loop(){
+    cx += (gx - cx) * 0.12; cy += (gy - cy) * 0.12;
+    glow.style.setProperty('--mx', cx + 'px');
+    glow.style.setProperty('--my', cy + 'px');
+    requestAnimationFrame(loop);
+  })();
+
+  // scroll progress
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    prog.style.width = (scrollY / h * 100) + '%';
+  }, {passive:true});
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
